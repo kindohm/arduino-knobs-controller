@@ -40,27 +40,10 @@ void loop() {
 
   readAnalogValue(A0, 0);
   readAnalogValue(A1, 1);
-  // readAnalogValue(A2, 2);
-  // readAnalogValue(A3, 3);
-  // readAnalogValue(A4, 4);
-  // readAnalogValue(A5, 5);
-
-  // // Serial.println('hi');
-
-  // // Read the potentiometer value (0-1023)
-  // int potentiometerValue = analogRead(potentiometerPin);
-
-  // // Map the potentiometer value to a MIDI CC value (0-127)
-  // int midiValue = map(potentiometerValue, 0, 1023, 0, 127);
-
-  // if (midiValue != analog1Value) {
-  //   Serial.println(midiValue);
-
-  //   // Send the MIDI Control Change message
-  //   MIDI.sendControlChange(controllerNumber, midiValue, midiChannel);
-  //   analog1Value = midiValue;
-  // }
-
+  readAnalogValue(A2, 2);
+  readAnalogValue(A3, 3);
+  readAnalogValue(A4, 4);
+  readAnalogValue(A5, 5);
 
   // Small delay to avoid flooding MIDI messages
   delay(10);
