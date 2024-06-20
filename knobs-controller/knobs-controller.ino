@@ -1,20 +1,14 @@
-#include <MIDI.h>
-
-MIDI_CREATE_DEFAULT_INSTANCE();
+#include <MIDIUSB.h>
 
 int analogValues[6];
 
 const int potentiometerPin = A0;  // Analog input pin for the potentiometer
-const int midiChannel = 1;        // MIDI channel (1-16)
-const int controllerNumber = 7;   // MIDI CC number (e.g., 7 for volume)
+
+const uint8_t midiChannel = 1;
 
 void setup() {
-  // Initialize serial communication for MIDI output
-  MIDI.begin(midiChannel);
-  Serial.begin(9600);  // MIDI baud rate
+  // Serial.begin(9600); 
 
-  // Optionally, you can send an initial message
-  // MIDI.sendControlChange(controllerNumber, 0, midiChannel);
   analogValues[0] = 0;
   analogValues[1] = 0;
   analogValues[2] = 0;
@@ -30,9 +24,11 @@ int readAnalogValue(int pin, int index) {
   int midiValue = map(potValue, 0, 1023, 0, 127);
   if (analogValues[index] != midiValue) {
     analogValues[index] = midiValue;
-    MIDI.sendControlChange(controllerNumber, midiValue, midiChannel);
-    Serial.println(index);
-    Serial.println(midiValue);
+    
+    sendControlChange(midiChannel, index + 1, midiValue);
+
+    // Serial.println(index);
+    // Serial.println(midiValue);
   }
 }
 
@@ -48,3 +44,11 @@ void loop() {
   // Small delay to avoid flooding MIDI messages
   delay(10);
 }
+
+void sendControlChange(uint8_t channel, uint8_t control, uint8_t value) {
+  midiEventPacket_t event = {0x0B, 0xB0 | (channel - 1), control, value};
+  MidiUSB.sendMIDI(event);
+  MidiUSB.flush();
+}
+
+
